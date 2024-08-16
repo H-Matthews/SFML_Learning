@@ -10,7 +10,7 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(game src/main.cpp)
+add_executable(game src/main.cpp src/Game.cpp src/Game.hpp src/ResourceHolder.hpp)
 target_link_libraries(game PRIVATE sfml-graphics)
 target_compile_features(game PRIVATE cxx_std_17)
 

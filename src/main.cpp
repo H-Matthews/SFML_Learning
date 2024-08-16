@@ -1,20 +1,9 @@
-#include <SFML/Graphics.hpp>
+#include "Game.hpp"
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 480u, 760u }, "CMake SFML Project" };
+    Game game;
+    game.run();
 
-    while (window.isOpen())
-    {
-        for (auto event = sf::Event{}; window.pollEvent(event);)
-        {
-            if (event.type == sf::Event::Closed)
-            {
-                window.close();
-            }
-        }
-
-        window.clear();
-        window.display();
-    }
+    return 0;
 }
