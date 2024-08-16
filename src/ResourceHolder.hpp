@@ -2,6 +2,9 @@
 #define RESOURCE_HOLDER_H
 
 #include "assert.h"
+#include <string>
+#include <memory>
+#include <map>
 
 template <typename Resource, typename Identifier>
 class ResourceHolder
@@ -9,7 +12,8 @@ class ResourceHolder
     public:
         void load(Identifier id, const std::string& fileName);
 
-        template <typename Parameter> void load(Identifier id, const std::string& fileName, const Parameter& secondParam );
+        template <typename Parameter> 
+        void load(Identifier id, const std::string& fileName, const Parameter& secondParam );
 
         Resource& get(Identifier id);
         const Resource& get(Identifier id) const;
@@ -21,6 +25,4 @@ class ResourceHolder
 };
 
 #include "ResourceHolder.inl"
-
-
 #endif

@@ -4,6 +4,7 @@ Attempting to develop a 2D game has shown me that I dont know much about how bas
 ## Content
 [Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
 [Resource Management](./Game_Design_Techniques.md#resource-management)
+[Sequential Rendering](./Game_Design_Techniques.md#sequential-rendering)
 
 ### Game Loops and Frames
 
@@ -163,3 +164,25 @@ This class allows us to write the following code:
 ```
 
 Our class stores the sf::Texture, Textures::ID pairing in a map data structure and we can make use of the STL features in C++11.
+
+# Sequential Rendering
+How are things going to be rendered to the screen and in what order? How can we easily keep track of this so that everytime we call draw, we know that the elements will be ordered in the correct order?
+
+You could create a container of entitys then call draw on each entity... However, If we ever want to handle another entity relative to another then this container approach makes it difficult. The best way to layout entitys in relation on the screen is in a Tree data structure.
+
+## SceneGraph
+A Scene Graph will help us manage transforms in a user-friendly way. This is a Tree data structure consisting of multiple nodes, called Scene Nodes. Each Scene Node will store an object that is drawn to the screen. Each node may have an arbitrary amount of child nodes, which adapt to the transform of their parent node when rendered. The children only store the position, rotation, and scale relative to their parent
+
+#### Ownership Semantics
+The scene graph will own the scene nodes. Therefore it will be responsible for their lifetime and destruction. We want each node to store all its child nodes. If a node is destroyed, its children are destroyed with it. If the root is destroyed, the whole scene graph is torn down.
+
+We CANNOT use a std::vector<SceneNode> since the element types must be complete types. We could use std::vector<SceneNode*> but then we would have to manage memory ourselves which we dont want to do.
+So, we use std::vecotr<std::unique_ptr<SceneNode>> instead. 
+
+#### SceneNode Class
+Our SceneNode Class will have a container to its children SceneNodes. And a SceneNode pointer to its parent
+Code:
+``` c++
+std::vector<std::unique_ptr<SceneNode>> mChildren
+SceneNode* mParent
+```
