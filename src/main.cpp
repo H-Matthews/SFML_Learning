@@ -2,8 +2,7 @@
 
 int main()
 {
-    auto window = sf::RenderWindow{ { 1920u, 1080u }, "CMake SFML Project" };
-    window.setFramerateLimit(144);
+    auto window = sf::RenderWindow{ { 480u, 760u }, "CMake SFML Project" };
 
     while (window.isOpen())
     {
