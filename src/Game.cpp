@@ -21,15 +21,15 @@ Game::Game() :
     mIsMovingLeft(false),
     mIsMovingRight(false)
 {
-    mTextures.load(Textures::Airplane, "../Media/Textures/Airplane.png");
-    mTextures.load(Textures::Landscape, "../Media/Textures/Desert.png");
+    mTextures.load(Textures::Airplane, "../media/Textures/Airplane.png");
+    mTextures.load(Textures::Landscape, "../media/Textures/Desert.png");
 
     mPlayerPlane.setTexture(mTextures.get(Textures::Airplane));
     mPlayerPlane.setPosition(100.f, 100.f);
 
     mLandScape.setTexture(mTextures.get(Textures::Landscape));
 
-    mFont.loadFromFile("../Media/Sansation.ttf");
+    mFont.loadFromFile("../media/Sansation.ttf");
     mStatisticsText.setFont(mFont);
     mStatisticsText.setPosition(5.f, 5.f);
     mStatisticsText.setCharacterSize(15);
