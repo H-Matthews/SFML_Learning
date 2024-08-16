@@ -2,11 +2,9 @@ name: CI
 
 on: 
   push:
-      Paths:
-      - 'src/**'
+      paths: ['src/**']
  pull_request:
-      Paths:
-      - 'src/**'
+      paths: ['src/**']
 
 defaults:
   run:
