@@ -20,10 +20,10 @@ World::World(sf::RenderWindow& window) :
     mWorldView.setCenter(mSpawnPosition);
 }
 
-void World::update(sf::Time dt)
+void World::update(sf::Time timeStep)
 {
     // Scroll the World
-    mWorldView.move(0.f, mScrollSpeed * dt.asSeconds());
+    mWorldView.move(0.f, mScrollSpeed * timeStep.asSeconds());
 
     // Move the player sideways (plane scout follow the main aircraft)
     sf::Vector2f position = mPlayerAircraft->getPosition();
@@ -37,7 +37,7 @@ void World::update(sf::Time dt)
     }
 
     // Apply movements
-    mSceneGraph.update(dt);
+    mSceneGraph.update(timeStep);
 }
 
 void World::draw()

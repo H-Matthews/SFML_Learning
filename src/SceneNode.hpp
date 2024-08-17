@@ -8,7 +8,7 @@ class SceneNode : public sf::Transformable, public sf::Drawable
 {
     public:
         SceneNode();
-        void update(sf::Time dt);
+        void update(sf::Time timeStep);
         sf::Transform getWorldTransform() const;
         sf::Vector2f getWorldPosition() const;
 
@@ -19,12 +19,13 @@ class SceneNode : public sf::Transformable, public sf::Drawable
         std::vector<std::unique_ptr<SceneNode>> mChildren;
         SceneNode* mParent;
 
-        virtual void updateCurrent(sf::Time dt);
-        void updateChildren(sf::Time dt);
+    private:
+        virtual void updateCurrent(sf::Time timeStep);
+        void updateChildren(sf::Time timeStep);
 
-        // Derived from Drawable
-        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
-
+        // Draw is derived from Drawable and is called from SFMLs Window
+        // That is why its listed as private
+        virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const final;
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
         void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 

@@ -2,13 +2,20 @@
 
 Textures::ID toTextureID(Aircraft::Type type)
 {
+    Textures::ID tempType;
     switch(type)
     {
         case Aircraft::Eagle:
-            return Textures::Eagle;
+            tempType = Textures::Eagle;
+            break;
         case Aircraft::Raptor:
-            return Textures::Raptor;
+            tempType = Textures::Raptor;
+            break;
+        default:
+            tempType = Textures::Eagle;
     }
+
+    return tempType;
 }
 
 Aircraft::Aircraft(Type type, const TextureHolder& textures) : mType(type), 

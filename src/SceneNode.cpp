@@ -50,21 +50,21 @@ void SceneNode::drawChildren(sf::RenderTarget& target, sf::RenderStates states) 
     }
 }
 
-void SceneNode::update(sf::Time dt)
+void SceneNode::update(sf::Time timeStep)
 {
-    updateCurrent(dt);
-    updateChildren(dt);
+    updateCurrent(timeStep);
+    updateChildren(timeStep);
 }
 
 void SceneNode::updateCurrent(sf::Time)
 {
 }
 
-void SceneNode::updateChildren(sf::Time dt)
+void SceneNode::updateChildren(sf::Time timeStep)
 {
     for(const std::unique_ptr<SceneNode>& child : mChildren)
     {
-        child->update(dt);
+        child->update(timeStep);
     }
 }
 
