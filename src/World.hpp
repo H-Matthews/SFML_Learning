@@ -2,6 +2,7 @@
 #define WORLD_H
 
 #include <SFML/Graphics.hpp>
+#include <array>
 
 #include "ResourceHolder.hpp"
 #include "ResourceEnums.hpp"
