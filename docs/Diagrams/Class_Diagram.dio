@@ -1,17 +1,139 @@
 <mxfile host="65bd71144e">
     <diagram id="fvtG5melvwD-BwSoD_ME" name="Page-1">
-        <mxGraphModel dx="1199" dy="1067" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
+        <mxGraphModel dx="4510" dy="1512" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1100" pageHeight="850" background="#1E1F1D" math="0" shadow="0">
             <root>
                 <mxCell id="0"/>
                 <mxCell id="1" parent="0"/>
-                <mxCell id="2" value="ResourceHolder&lt;sf::Texture, Textures::ID&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
-                    <mxGeometry x="30" y="50" width="650" height="160" as="geometry"/>
+                <mxCell id="2" value="ResourceHolder&lt;sf::Texture, Textures::ID&gt;" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" parent="1" vertex="1">
+                    <mxGeometry x="-435" y="30" width="650" height="160" as="geometry"/>
                 </mxCell>
-                <mxCell id="4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="2">
+                <mxCell id="4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="2" vertex="1">
                     <mxGeometry y="26" width="650" height="8" as="geometry"/>
                 </mxCell>
-                <mxCell id="5" value="+ void load(Identifier id, const std::string&amp; fileName)&#10;+ template &lt;typename Parameter&gt; void load(Identifier id, const std::string&amp; fileName const Parameter&amp; secondParam)&#10;+ Resource&amp; get(Identifier id) const;&#10;+ const Resource&amp; get(Identifier id) const;&#10;&#10;- void insertResource(Identifier id, std::unique_ptr&lt;Resource&gt; resource);&#10;- std::map&lt;Identifier, std::unique_ptr&lt;Resource&gt;&gt; mResourceMap;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="2">
+                <mxCell id="5" value="+ void load(Identifier id, const std::string&amp; fileName)&#10;+ template &lt;typename Parameter&gt; void load(Identifier id, const std::string&amp; fileName const Parameter&amp; secondParam)&#10;+ Resource&amp; get(Identifier id) const&#10;+ const Resource&amp; get(Identifier id) const&#10;&#10;- void insertResource(Identifier id, std::unique_ptr&lt;Resource&gt; resource)&#10;- std::map&lt;Identifier, std::unique_ptr&lt;Resource&gt;&gt; mResourceMap&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" parent="2" vertex="1">
                     <mxGeometry y="34" width="650" height="126" as="geometry"/>
+                </mxCell>
+                <mxCell id="39" value="" style="edgeStyle=none;startArrow=diamondThin;startFill=1;startSize=14;endSize=12;entryX=0;entryY=0.5;entryDx=0;entryDy=0;html=1;" edge="1" parent="1" source="6" target="11">
+                    <mxGeometry relative="1" as="geometry">
+                        <mxPoint x="-255.79439252336442" y="477" as="targetPoint"/>
+                        <Array as="points">
+                            <mxPoint x="-350" y="400"/>
+                        </Array>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="40" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="39">
+                    <mxGeometry x="0.1882" y="1" relative="1" as="geometry">
+                        <mxPoint x="-62" y="-12" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="6" value="Game" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-840" y="250" width="400" height="300" as="geometry"/>
+                </mxCell>
+                <mxCell id="7" value="- sf::RenderWindow mWindow&#10;- World world&#10;- sf::Font mFont&#10;- sf::Text mStatisticsText&#10;- sf::Time mStatisticsUpdateTime&#10;- std::size_t mStatisticsNumFrames" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="6">
+                    <mxGeometry y="26" width="400" height="94" as="geometry"/>
+                </mxCell>
+                <mxCell id="8" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="6">
+                    <mxGeometry y="120" width="400" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="9" value="+ Game()&#10;+ void run()&#10;- void processEvents()&#10;- void update(sf::Time timeStep)&#10;- void render()&#10;- void handlePlayerInput(sf::Keyboard::Key key, bool isPressed)&#10;- void updateStatistics(sf::Time elapsedTime) " style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="6">
+                    <mxGeometry y="128" width="400" height="172" as="geometry"/>
+                </mxCell>
+                <mxCell id="42" value="" style="edgeStyle=none;html=1;startArrow=diamondThin;startFill=1;startSize=14;endSize=12;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="10" target="14">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="10" value="World" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-330" y="297" width="440" height="280" as="geometry"/>
+                </mxCell>
+                <mxCell id="11" value="- sf::RenderWindow&amp; mWindow&#10;- sf::View mWorldView&#10;- ResourceHolder&lt;sf::Texture, Textures::ID&gt; textureHolder&#10;- SceneNode mSceneGraph&#10;- std::array&lt;SceneNode*, LayerCount, mSceneLayers&#10;- sf::FloatRect mWorldBounds&#10;- sf::Vector2f mSpawnPosition&#10;- float mScrollSpeed&#10;- Aircraft* mPlayerAircraft&#10;-  enum Layer {Background = 0, Air, LayerCount }" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+                    <mxGeometry y="26" width="440" height="154" as="geometry"/>
+                </mxCell>
+                <mxCell id="12" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="10">
+                    <mxGeometry y="180" width="440" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="13" value="+ explicit World(sf::RenderWindow* window)&#10;+ void update(sf::Time timeStep)&#10;+ void draw()&#10;- void loadTextures()&#10;- void buildScene()&#10;&#10;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="10">
+                    <mxGeometry y="188" width="440" height="92" as="geometry"/>
+                </mxCell>
+                <mxCell id="14" value="SceneNode" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-350" y="690" width="480" height="270" as="geometry"/>
+                </mxCell>
+                <mxCell id="15" value="- std::vector&lt;std::unique_ptr&lt;SceneNode&gt;&gt; mChildren&#10;- SceneNode* mParent" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="14">
+                    <mxGeometry y="26" width="480" height="44" as="geometry"/>
+                </mxCell>
+                <mxCell id="16" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="14">
+                    <mxGeometry y="70" width="480" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="17" value="+ SceneNode()&#10;+ void update(sf::Time timeStep)&#10;+ sf::Transform getWorldTransform() const&#10;+ sf::Vector2f getWorldPosition() const&#10;+ void attachChild(std::unique_ptr&lt;SceneNode&gt; child)&#10;+ std::unique_ptr&lt;SceneNode&gt; detachChild(const SceneNode&amp; node)&#10;&#10;- virtual void updateCurrent(sf::Time timeStep)&#10;- void updateChildren(sf::Time timeStep)&#10;- virtual void draw(sf::RenderTarget&amp; target, sf::RenderStates states) const final&#10;- virtual void drawCurrent(sf::RenderTarget&amp; target, sf::RenderStates states) const&#10;- void drawChildren(sf::RenderTarget&amp; target, sf::RenderStates states) const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="14">
+                    <mxGeometry y="78" width="480" height="192" as="geometry"/>
+                </mxCell>
+                <mxCell id="18" value="Entity" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-270" y="1050" width="300" height="140" as="geometry"/>
+                </mxCell>
+                <mxCell id="19" value="- sf::Vector2f mVelocity" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="18">
+                    <mxGeometry y="26" width="300" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="20" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="18">
+                    <mxGeometry y="52" width="300" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="21" value="+ void setVelocity(const sf::Vector2f velocity)&#10;+ void setvelocity(const float vx, const float vy)&#10;+ sf::Vector2f getVelocity() const&#10;&#10;- virtual void updateCurrent(sf::Time timeStep)" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="18">
+                    <mxGeometry y="60" width="300" height="80" as="geometry"/>
+                </mxCell>
+                <mxCell id="27" value="Aircraft" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="-362.5" y="1280" width="485" height="130" as="geometry"/>
+                </mxCell>
+                <mxCell id="28" value="+ enum Type {Eagle = 0, Raptor}&#10;- Type mType&#10;- sf::Sprite mSprite" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="27">
+                    <mxGeometry y="26" width="485" height="54" as="geometry"/>
+                </mxCell>
+                <mxCell id="29" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="27">
+                    <mxGeometry y="80" width="485" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="30" value="+ explicit Aircraft(Type type, const TextureHolder&amp; textures)&#10;+ virtual void drawCurrent(sf::RenderTarget&amp; target, sf::RenderStates states) const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="27">
+                    <mxGeometry y="88" width="485" height="42" as="geometry"/>
+                </mxCell>
+                <mxCell id="31" value="SpriteNode" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;" vertex="1" parent="1">
+                    <mxGeometry x="270" y="780" width="465" height="120" as="geometry"/>
+                </mxCell>
+                <mxCell id="32" value="- sf::Sprite mSprite" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="31">
+                    <mxGeometry y="26" width="465" height="26" as="geometry"/>
+                </mxCell>
+                <mxCell id="33" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="31">
+                    <mxGeometry y="52" width="465" height="8" as="geometry"/>
+                </mxCell>
+                <mxCell id="34" value="+ explicit SpriteNode(const sf::Texture&amp; texture)&#10;+ SpriteNode(const sf::Texture&amp; texture, const sf::IntRect&amp; textureRect)&#10;- virtual void drawCurrent(sf::RenderTarget&amp; target, sf::RenderStates states) const" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;" vertex="1" parent="31">
+                    <mxGeometry y="60" width="465" height="60" as="geometry"/>
+                </mxCell>
+                <mxCell id="43" value="3" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="1">
+                    <mxGeometry x="-100" y="590" as="geometry">
+                        <mxPoint x="-1" y="7" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="45" value="" style="edgeStyle=none;html=1;startArrow=diamondThin;startFill=1;startSize=14;endSize=12;fontFamily=Helvetica;" edge="1" parent="1" source="10" target="5">
+                    <mxGeometry relative="1" as="geometry"/>
+                </mxCell>
+                <mxCell id="46" value="1" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];fontFamily=Helvetica;" vertex="1" connectable="0" parent="45">
+                    <mxGeometry x="-0.3168" y="2" relative="1" as="geometry">
+                        <mxPoint x="12" y="24" as="offset"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="49" value="" style="endArrow=classic;html=1;fontFamily=Helvetica;startSize=14;endSize=12;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="18">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="-70" y="990" as="sourcePoint"/>
+                        <mxPoint x="-120" y="960" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="50" value="" style="endArrow=classic;html=1;fontFamily=Helvetica;startSize=14;endSize=12;exitX=0;exitY=-0.024;exitDx=0;exitDy=0;entryX=1.005;entryY=0.364;entryDx=0;entryDy=0;entryPerimeter=0;exitPerimeter=0;" edge="1" parent="1" source="34" target="17">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="200" y="885" as="sourcePoint"/>
+                        <mxPoint x="200" y="795" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
+                </mxCell>
+                <mxCell id="51" value="" style="endArrow=classic;html=1;fontFamily=Helvetica;startSize=14;endSize=12;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="27">
+                    <mxGeometry width="50" height="50" relative="1" as="geometry">
+                        <mxPoint x="-120" y="1280" as="sourcePoint"/>
+                        <mxPoint x="-120" y="1190" as="targetPoint"/>
+                        <Array as="points"/>
+                    </mxGeometry>
                 </mxCell>
             </root>
         </mxGraphModel>
