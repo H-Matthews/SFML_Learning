@@ -25,7 +25,7 @@ void World::update(sf::Time timeStep)
     // Scroll the World
     mWorldView.move(0.f, mScrollSpeed * timeStep.asSeconds());
 
-    // Move the player sideways (plane scout follow the main aircraft)
+    // Move the player sidewards (plane scout follow the main aircraft)
     sf::Vector2f position = mPlayerAircraft->getPosition();
     sf::Vector2f velocity = mPlayerAircraft->getVelocity();
 
