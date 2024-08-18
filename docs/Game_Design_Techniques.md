@@ -2,9 +2,9 @@
 Attempting to develop a 2D game has shown me that I dont know much about how basic games work. This document is intended to explain underlying concepts in game design that are new to me. 
 
 ## Content
-[Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
-[Resource Management](./Game_Design_Techniques.md#resource-management)
-[Sequential Rendering](./Game_Design_Techniques.md#sequential-rendering)
+- [Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
+- [Resource Management](./Game_Design_Techniques.md#resource-management)
+- [Sequential Rendering](./Game_Design_Techniques.md#sequential-rendering)
 
 ### Game Loops and Frames
 
@@ -238,3 +238,5 @@ NOTE: Each of the draw classes is labeled as private because SceneNode::draw() i
 The code for both drawChildren() will be the same as updateChildren() that is call draw() again if it has a child in the mChildren std::vector. The implementation for drawCurrent will be provided from the derived classes depending on how it needs to be drawn.
 
 Every frame we will call these functions from the root SceneNode that way we iterate each child correctly
+
+There is a visualization of the Scene Graph [Here](../docs/Diagrams/SceneGraph.dio)
