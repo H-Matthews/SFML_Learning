@@ -17,7 +17,7 @@ class Aircraft : public Entity
 
         // Define as explicit to prevent compiler from converting type implicitly
         explicit Aircraft(Type type, const TextureHolder& textures);
-        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+        virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
 
     private:
         Type mType;
