@@ -8,27 +8,13 @@ const sf::Time Game::TimePerFrame = sf::seconds(1.f / 120.f);
 const float Game::PlayerSpeed = 50;
 
 Game::Game() :
-    mTextures(),
-    mWindow(sf::VideoMode(640, 480), "SFML Tutorial Application"),
-    mPlayerPlane(),
-    mLandScape(), 
+    mWindow(sf::VideoMode(640, 480), "Game World", sf::Style::Close),
     mFont(),
     mStatisticsText(),
     mStatisticsUpdateTime(),
     mStatisticsNumFrames(0),
-    mIsMovingUp(false),
-    mIsMovingDown(false),
-    mIsMovingLeft(false),
-    mIsMovingRight(false)
+    mWorld(mWindow)
 {
-    mTextures.load(Textures::Airplane, "../media/Textures/Airplane.png");
-    mTextures.load(Textures::Landscape, "../media/Textures/Desert.png");
-
-    mPlayerPlane.setTexture(mTextures.get(Textures::Airplane));
-    mPlayerPlane.setPosition(100.f, 100.f);
-
-    mLandScape.setTexture(mTextures.get(Textures::Landscape));
-
     mFont.loadFromFile("../media/Sansation.ttf");
     mStatisticsText.setFont(mFont);
     mStatisticsText.setPosition(5.f, 5.f);
@@ -42,7 +28,6 @@ void Game::run()
 
     while(mWindow.isOpen())
     {
-        processEvents();
 
         sf::Time elapsedTime = clock.restart();
         timeSinceLastUpdate += elapsedTime;
@@ -87,8 +72,9 @@ void Game::processEvents()
 void Game::render()
 {
     mWindow.clear();
-    mWindow.draw(mLandScape);
-    mWindow.draw(mPlayerPlane);
+    mWorld.draw();
+
+    mWindow.setView(mWindow.getDefaultView());
     mWindow.draw(mStatisticsText);
     mWindow.display();
 }
@@ -98,35 +84,11 @@ void Game::update(sf::Time fixedTimeStep)
     std::cout << "Time Per Frame as seconds: " << fixedTimeStep.asSeconds() << std::endl;
     std::cout << "Time Per Frame as milliseconds: " << fixedTimeStep.asMicroseconds() << std::endl;
 
-    sf::Vector2f movement(0.f, 0.f);
-
-    if(mIsMovingUp)
-        movement.y -= 1.f;
-
-    if(mIsMovingDown)
-        movement.y += 1.f;
-        
-    if(mIsMovingLeft)
-        movement.x -= 1.f;
-       
-    if(mIsMovingRight)
-        movement.x += 1.f;
-    
-    // Multiply our movement by a fixed time step every update iteration.
-    // We only call update when we have gone above the alloted threshold
-    mPlayerPlane.move((movement * fixedTimeStep.asSeconds()) * PlayerSpeed);
+    mWorld.update(fixedTimeStep);
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
 {
-    if(key == sf::Keyboard::W)
-        mIsMovingUp = isPressed;
-    else if(key == sf::Keyboard::S)
-        mIsMovingDown = isPressed;
-    else if(key == sf::Keyboard::A)
-        mIsMovingLeft = isPressed;
-    else if(key == sf::Keyboard::D)
-        mIsMovingRight = isPressed;
 }
 
 std::string Game::toString(std::size_t value)

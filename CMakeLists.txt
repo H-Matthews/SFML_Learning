@@ -10,7 +10,23 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-add_executable(game src/main.cpp src/Game.cpp src/Game.hpp src/ResourceHolder.hpp)
+add_executable(game 
+src/main.cpp
+src/Game.cpp 
+src/Game.hpp
+src/Entity.hpp 
+src/Entity.cpp
+src/Aircraft.hpp 
+src/Aircraft.cpp 
+src/SpriteNode.hpp
+src/SpriteNode.cpp 
+src/World.hpp
+src/World.cpp
+src/ResourceHolder.hpp
+src/ResourceEnums.hpp
+src/SceneNode.hpp
+src/SceneNode.cpp)
+
 target_link_libraries(game PRIVATE sfml-graphics)
 target_compile_features(game PRIVATE cxx_std_17)
 

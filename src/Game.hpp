@@ -4,15 +4,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "ResourceHolder.hpp"
-
-namespace Textures
-{
-    enum ID
-    {
-        Landscape = 0,
-        Airplane,
-    };
-}
+#include "World.hpp"
 
 class Game
 {
@@ -32,19 +24,13 @@ class Game
         static const sf::Time TimePerFrame;
         static const float PlayerSpeed;
 
-        sf::Sprite mLandScape;
-        ResourceHolder<sf::Texture, Textures::ID> mTextures;
         sf::RenderWindow mWindow;
-        sf::Sprite mPlayerPlane;
+        World mWorld;
+
         sf::Font mFont;
         sf::Text mStatisticsText;
         sf::Time mStatisticsUpdateTime;
-
         std::size_t mStatisticsNumFrames;
-        bool mIsMovingUp;
-        bool mIsMovingDown;
-        bool mIsMovingLeft;
-        bool mIsMovingRight;
 };
 
 #endif

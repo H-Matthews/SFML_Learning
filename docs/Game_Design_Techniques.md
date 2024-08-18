@@ -2,8 +2,9 @@
 Attempting to develop a 2D game has shown me that I dont know much about how basic games work. This document is intended to explain underlying concepts in game design that are new to me. 
 
 ## Content
-[Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
-[Resource Management](./Game_Design_Techniques.md#resource-management)
+- [Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
+- [Resource Management](./Game_Design_Techniques.md#resource-management)
+- [Sequential Rendering](./Game_Design_Techniques.md#sequential-rendering)
 
 ### Game Loops and Frames
 
@@ -163,3 +164,79 @@ This class allows us to write the following code:
 ```
 
 Our class stores the sf::Texture, Textures::ID pairing in a map data structure and we can make use of the STL features in C++11.
+
+# Sequential Rendering
+How are things going to be rendered to the screen and in what order? How can we easily keep track of this so that everytime we call draw, we know that the elements will be ordered in the correct order?
+
+You could create a container of entitys then call draw on each entity... However, If we ever want to handle another entity relative to another then this container approach makes it difficult. The best way to layout entitys in relation on the screen is in a Tree data structure known as a Scene Graph.
+
+## SceneGraph
+A Scene Graph will help us manage transforms in a user-friendly way. This is a Tree data structure consisting of multiple nodes, called Scene Nodes. Each Scene Node will store an object that is drawn to the screen and it will be able to define how it draws itself depending on what object it is. Each node may have an arbitrary amount of child nodes, which adapt to the transform of their parent node when rendered. The children only store the position, rotation, and scale relative to their parent
+
+#### Ownership Semantics
+The scene graph will own the scene nodes. Therefore it will be responsible for their lifetime and destruction. We want each node to store all its child nodes. If a node is destroyed, its children are destroyed with it. If the root is destroyed, the whole scene graph is torn down.
+
+We CANNOT use a std::vector<SceneNode> since the element types must be complete types. We could use std::vector<SceneNode*> but then we would have to manage memory ourselves which we dont want to do.
+So, we use std::vector<std::unique_ptr<SceneNode>> instead. 
+
+#### SceneNode Class
+Our SceneNode Class will have a container to its children SceneNodes. And a SceneNode pointer to its parent.
+Adding and removing Nodes from the Tree needs to be defined. Adding is relatively simple, however, removing will require more code. The class will also need a update function so that it can update the current node, then retrieve its children and update those as well. We will also need to hand the function our fixed timeStep. The code below describes the basic structure
+
+Code:
+``` c++
+private:
+    std::vector<std::unique_ptr<SceneNode>> mChildren
+    SceneNode* mParent
+public:
+    void attachChild(std::unique_ptr<SceneNode> child);
+    std::unique_ptr<SceneNode> detachChild(const SceneNode& node);
+    void update(sf::Time timeStep);
+```
+
+The public functions will be how we interface with our Tree. In order to simplify the implementation of the update function it will be useful to break it into different functions. The code below describes that change.
+
+``` c++
+private:
+    std::vector<std::unique_ptr<SceneNode>> mChildren
+    SceneNode* mParent
+public:
+    void attachChild(std::unique_ptr<SceneNode> child);
+    std::unique_ptr<SceneNode> detachChild(const SceneNode& node);
+    void update(sf::Time timeStep);
+
+private:
+    virtual void updateCurrent(sf::Time timeStep);
+    void updateChildren(sf::Time timeStep);
+```
+
+We make updateCurrent virtual because it will be dependent on the type of SceneNode we are processing. Different entitys will need to be updated differently depending on game state. UpdateChildren() will simply iterate over the mChildren vector and call update again it iterates over the entire Tree and updates each node appropriately.
+
+``` c++
+void SceneNode::updateChildren(sf::time timeStep)
+{
+    for(const std::unique_ptr<SceneNode>& child : mChildren)
+    {
+        child->update(timeStep);
+    }
+}
+```
+Our Class will also need to override the draw() function from the SFML Drawable class. We will use the same structure to draw each node and its children as we do with the updates.
+
+``` c++
+
+virtual void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const final;
+{
+    states.transform *= getTransform();
+
+    drawCurrent(target, states);
+    drawChildren(target, states);
+}
+```
+NOTE: Each of the draw classes is labeled as private because SceneNode::draw() is actually called from inside the Drawable class which SceneNode inherits from. 
+
+The code for both drawChildren() will be the same as updateChildren() that is call draw() again if it has a child in the mChildren std::vector. The implementation for drawCurrent will be provided from the derived classes depending on how it needs to be drawn.
+
+Every frame we will call these functions from the root SceneNode that way we iterate each child correctly
+
+There is a visualization of the Scene Graph [Here](../docs/Diagrams/SceneGraph.dio)
