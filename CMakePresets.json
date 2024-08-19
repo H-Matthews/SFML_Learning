@@ -1,0 +1,55 @@
+{
+    "version": 3,
+    "configurePresets": 
+    [
+        {
+            "name": "debug-unix",
+            "displayName": "Debug-unix Config",
+            "description": "Debug build using Unix Makefiles",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build/debug-unix",
+            "cacheVariables": 
+            {
+                "CMAKE_BUILD_TYPE": "Debug"
+            }
+        },
+
+        {
+            "name": "windows-VS22",
+            "displayName": "Windows VS2022 Config",
+            "description": "Generates soulution for VS2022",
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/windows"
+        },
+
+        {
+            "name": "release-unix",
+            "displayName": "Release-unix Config",
+            "description": "Release build using Unix Makefiles",
+            "generator": "Unix Makefiles",
+            "binaryDir": "${sourceDir}/build/release-unix",
+            "cacheVariables": 
+            {
+                "CMAKE_BUILD_TYPE": "Release"
+            }
+        }
+    ],
+
+    "buildPresets": 
+    [
+        {
+            "name": "default-unix",
+            "configurePreset": "debug-unix"
+        },
+
+        {
+            "name": "release-unix",
+            "configurePreset": "release-unix"
+        },
+
+        {
+            "name": "windows-VS22",
+            "configurePreset": "windows-VS22"
+        }
+    ]
+}
