@@ -48,9 +48,10 @@ void World::draw()
 
 void World::loadTextures()
 {
-    mTextures.load(Textures::Eagle, "../media/Textures/Eagle.png");
-    mTextures.load(Textures::Raptor, "../media/Textures/Raptor.png");
-    mTextures.load(Textures::Desert, "../media/Textures/Desert.png");
+    // Paths are relative to the bin directory
+    mTextures.load(Textures::Eagle, "../../media/Textures/Eagle.png");
+    mTextures.load(Textures::Raptor, "../../media/Textures/Raptor.png");
+    mTextures.load(Textures::Desert, "../../media/Textures/Desert.png");
 }
 
 void World::buildScene()
