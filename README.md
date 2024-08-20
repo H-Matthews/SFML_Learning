@@ -12,7 +12,7 @@ I am going to be using CMake and Github actions for this SFML project. For a mor
 * Windows VS2022, VS2019
 
 # Requirements
-Here you will find all of the necessary third part tools needed to build the application
+Here you will find all of the necessary third party tools needed to build the application
 - Git
 - CMake
 
@@ -35,16 +35,34 @@ sudo apt install \
 ```
 
 # Building and Running
-Use the following commands to build on any OS
+
+### CMakePresets
+The project is currently configured for the following configurations:
+- Debug-UnixMake
+- Release-UnixMake
+- WindowsVS2022
+- WIndowsVS2019
+
+In order to generate a configuration and build, run the following commands
 ```
-cmake -B build
-cmake --build build --config Debug
+cmake --preset debug-unix
+cmake --build --preset debug-unix
+```
+The following commands shows you all available configurations.
+```
+cmake --list-presets
+cmake --build --list-presets
 ```
 
-The exectuable will be output to ./bin
+The executable will be built in ./bin/'BUILD_TYPE' where BUILD_TYPE='Debug' | 'Release'
+*** IMPORTANT: You must run the executable from this directory for it to load textures correctly.
 
 ### Windows Build
-If you are building for windows ``` cmake -B build ``` will generate a .sln to use with VS2022 or VS2019 in which you can open and build from there.
+Running one of the windows configurations will generate the solution files needed.
 
-If using the .sln its important that you click on the main application and select 'Set as Startup Project' Then you should be able to build
-
+Ex.
+```
+cmake --preset windows-VS22
+cmake --build --preset windows-VS22
+```
+The above commands generates a solution in build/'BUILD_TYPE'
