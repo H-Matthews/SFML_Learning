@@ -17,7 +17,7 @@ set(SRC src/main.cpp src/Game.cpp
         
 set (INC src/Game.hpp src/Entity.hpp 
          src/Aircraft.hpp src/SpriteNode.hpp
-         src/SpriteNode.hpp Src/World.hpp 
+         src/SpriteNode.hpp src/World.hpp 
          src/ResourceHolder.hpp src/ResourceEnums.hpp 
          src/SceneNode.hpp)
 
