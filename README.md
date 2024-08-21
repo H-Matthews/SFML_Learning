@@ -2,21 +2,24 @@
 The purpose of this project is to learn fundamental game design techniques while learning SFML and creating a 2D game along the way.
 
 # Documentation
-The docs directory contains class diagrams as well as notes that I've been writing to help flesh out some fundamental concepts.
+The docs directory contains class diagrams as well as notes that I've been writing to help flesh out some fundamental concepts. The diagrams were drawn with the DrawIO extension in VSCode.
 
 # Platforms
-I am going to be using CMake and Github actions for this SFML project. For a more in depth look at Platform versions, look at the Actions page. My main goal is to create a singleplayer 2D game that behaves almost identically on all Platforms.
+The project can run on the following platforms
 
 * MacOS 14.6.1
 * Ubuntu 22.04LTS
 * Windows VS2022, VS2019
 
 # Requirements
-Here you will find all of the necessary third party tools needed to build the application
+Here you will find all of the necessary third party tools needed to build the application regardlesss of platform
 - Git
 - CMake
 
-### Linux Specific Dependencies
+### Windows Dependencies
+- Visual Studio 2022 \ 2019
+
+### Linux Dependencies
 In order to build the application, the CMake script will first pull SFML from github and build into static libraries. If you are using linux, you will need specific dependencies in order to build SFML. They are listed below.
 
 On Ubuntu and other Debian-based distros, you can use the following command
@@ -35,34 +38,44 @@ sudo apt install \
 ```
 
 # Building and Running
+The recommended way to build this project is with CMakePresets. If you would like to build it with default commands you can it just needs a specific folder structure for the build files.
+
+## Building
+
+### Default Build
+Using default commands: 
+```
+cmake -B build/{PLATFORM}
+cmake --build build/{PLATFORM}
+```
+Ex. If on windows, PLATFORM=windows
 
 ### CMakePresets
 The project is currently configured for the following configurations:
 - Debug-UnixMake
 - Release-UnixMake
 - WindowsVS2022
-- WIndowsVS2019
+- WindowsVS2019
+
+The following commands shows you all available configurations
+```
+cmake --list-presets
+cmake --build --list-presets
+```
 
 In order to generate a configuration and build, run the following commands
 ```
 cmake --preset debug-unix
 cmake --build --preset debug-unix
 ```
-The following commands shows you all available configurations.
-```
-cmake --list-presets
-cmake --build --list-presets
-```
 
-The executable will be built in ./bin/'BUILD_TYPE' where BUILD_TYPE='Debug' | 'Release'
-*** IMPORTANT: You must run the executable from this directory for it to load textures correctly.
-
-### Windows Build
-Running one of the windows configurations will generate the solution files needed.
-
-Ex.
+### Windows Specific Build
+Using the 'windows-VS22' preset will generate the solution files for Visual Studio
 ```
 cmake --preset windows-VS22
-cmake --build --preset windows-VS22
 ```
-The above commands generates a solution in build/'BUILD_TYPE'
+
+## Running
+The binary will always reside in bin/'CONFIG_TYPE'. In order for the filepaths to be resolved correctly, it NEEDS be run from this directory OR the build/'PLATFORM' directory
+
+Visual Studio will run it from build/'PLATFORM'
