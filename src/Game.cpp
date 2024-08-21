@@ -15,7 +15,7 @@ Game::Game() :
     mStatisticsNumFrames(0),
     mWorld(mWindow)
 {
-    mFont.loadFromFile("../../media/Sansation.ttf");
+    mFont.loadFromFile("../media/Sansation.ttf");
     mStatisticsText.setFont(mFont);
     mStatisticsText.setPosition(5.f, 5.f);
     mStatisticsText.setCharacterSize(15);
