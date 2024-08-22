@@ -222,9 +222,7 @@ void SceneNode::updateChildren(sf::time timeStep)
 }
 ```
 Our Class will also need to override the draw() function from the SFML Drawable class. We will use the same structure to draw each node and its children as we do with the updates.
-
 ``` c++
-
 virtual void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const final;
 {
     states.transform *= getTransform();
@@ -234,6 +232,8 @@ virtual void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) 
 }
 ```
 NOTE: Each of the draw classes is labeled as private because SceneNode::draw() is actually called from inside the Drawable class which SceneNode inherits from. 
+
+The above code gets an initial state of the root node. It will send this state to its children and compute the new state.transform based on the parent nodes. The child then updates itself with the newly computed transform and draws itself.
 
 The code for both drawChildren() will be the same as updateChildren() that is call draw() again if it has a child in the mChildren std::vector. The implementation for drawCurrent will be provided from the derived classes depending on how it needs to be drawn.
 
