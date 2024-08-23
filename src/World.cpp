@@ -1,6 +1,8 @@
 #include "World.hpp"
 #include "SpriteNode.hpp"
 
+#include <iostream>
+
 
 World::World(sf::RenderWindow& window) : 
     mWindow(window),
@@ -9,7 +11,7 @@ World::World(sf::RenderWindow& window) :
     mSceneGraph(),
     mSceneLayers(),
     mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 2000.f),
-    mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f),
+    mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - (mWorldView.getSize().y / 2.f)),
     mScrollSpeed(-50.f),
     mPlayerAircraft(nullptr)
 {
@@ -30,7 +32,7 @@ void World::update(sf::Time timeStep)
     sf::Vector2f velocity = mPlayerAircraft->getVelocity();
 
     // If the player touches borders, flip its X velocity
-    if(position.x <= mWorldBounds.left + 150.f || position.x >= mWorldBounds.left + mWorldBounds.width - 150.f)
+    if(position.x <= mWorldBounds.left + 120.f || position.x >= mWorldBounds.left + mWorldBounds.width - 120.f)
     {
         velocity.x = -velocity.x;
         mPlayerAircraft->setVelocity(velocity);
