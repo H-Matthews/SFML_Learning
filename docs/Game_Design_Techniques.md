@@ -240,3 +240,51 @@ The code for both drawChildren() will be the same as updateChildren() that is ca
 Every frame we will call these functions from the root SceneNode that way we iterate each child correctly
 
 There is a visualization of the Scene Graph [Here](../docs/Diagrams/SceneGraph.dio)
+
+# Events and User Input
+In SFML, there is the following event types
+- Window events
+- Joystick events
+- Keyboard events
+- Mouse events
+
+There is documentation on SFMLs website that goes into great detail regarding these [events](https://www.sfml-dev.org/tutorials/2.6/window-events.php)
+
+## Real time input state
+A major restriction with events is that they report only once and it goes into the event data structure. Meaning you cannot continously ask them how the satte of the input devices looks RIGHT NOW. You must wait until the code executes where you pop events from the DS.
+
+SFML makes input management easier and implements classes that allows you to check for REAL TIME events. 
+
+Ex.
+```c++
+void Game::update(sf::Time elapsedTime)
+{
+    sf::vector2f movement(0.f, 0.f);
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+        movement.y -= PlayerSpeed;
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+        movement.y += PlayerSpeed;
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        movement.x -= PlayerSpeed;
+    if(sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+        movement.x += PlayerSpeed;
+
+    mPlayer.move(movement * elapsedTime.asSeconds());
+}
+
+```
+When do you use Events vs Real Time input? A good rule of thumb is if a state has changed, you should use events. If you want to know the current state, then you use the real-time functions
+
+Ex.
+```c++
+if(sf::Mouse::isButtonPressed(sf::Mouse::Left))
+    // WHILE the left mouse buttion is pressed do something specific
+if(event.type == sf::Event::MouseButtonPressed)
+    // When the left mouse button has been pressed, do something specific
+```
+
+## Separating input handling and Game Logic
+How do we separate input handling and game logic? We need a communication system that way when an event happens we send our a message to everyone that is interested.
+
+### Commands
+We will create a Command construct to denote messages that are sent to various game objects. A command is able to alter the object and to issue orders such as moving an entity, firing a weapon, or triggering an explosion.
