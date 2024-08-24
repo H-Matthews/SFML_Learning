@@ -40,9 +40,9 @@ sudo apt install \
 # Building and Running
 The recommended way to build this project is with CMakePresets. If you would like to build it with default commands you can it just needs a specific folder structure for the build files.
 
-## Building
+### Building with CMake
 
-### Default Build
+#### Default Commands
 Using default commands: 
 ```
 cmake -B build/{PLATFORM}
@@ -50,7 +50,7 @@ cmake --build build/{PLATFORM}
 ```
 Ex. If on windows, PLATFORM=windows
 
-### CMakePresets
+#### CMakePresets
 The project is currently configured for the following configurations:
 - Debug-UnixMake
 - Release-UnixMake
@@ -65,8 +65,8 @@ cmake --build --list-presets
 
 In order to generate a configuration and build, run the following commands
 ```
-cmake --preset debug-unix
-cmake --build --preset debug-unix
+cmake --preset 'PRESET_COFNIG_NAME'
+cmake --build --preset 'PRESET_NAME'
 ```
 
 ### Windows Specific Build
