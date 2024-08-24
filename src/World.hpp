@@ -8,6 +8,7 @@
 #include "ResourceEnums.hpp"
 #include "SceneNode.hpp"
 #include "Aircraft.hpp"
+#include "CommandQueue.hpp"
 
 class World : private sf::NonCopyable
 {
@@ -40,8 +41,7 @@ class World : private sf::NonCopyable
         sf::Vector2f mSpawnPosition;
         float mScrollSpeed;
         Aircraft* mPlayerAircraft;
-
-
+        CommandQueue mCommandQueue;
 };
 
 #endif

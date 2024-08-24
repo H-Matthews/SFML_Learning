@@ -288,3 +288,84 @@ How do we separate input handling and game logic? We need a communication system
 
 ### Commands
 We will create a Command construct to denote messages that are sent to various game objects. A command is able to alter the object and to issue orders such as moving an entity, firing a weapon, or triggering an explosion.
+
+#### std::function 
+This function is useful to create a Command Event Communication system, so its necessary to understand how it works.
+
+std::function class is a general purpose polymorphic function wrapper. Instances of std::function can store, copy, and invoke any target: lambda expressions, binding expressions or other function objects, as well as pointers to member functions and pointers to data members.
+
+It is a type of disposal object. This means that it erases the details of how some operations happen and provides a uniform runtime interface for them.
+
+Basic Example:
+
+```c++
+#include <functional>
+
+int square(int x) {
+    return x * x;
+}
+
+int main()
+{
+    std::function<int(int)> fn = square;
+
+    std::cout << fn(3) << std::endl;
+}
+```
+
+Example 2:
+```c++
+
+int add(int a, int b)
+{
+    return a + b;
+}
+
+std::function<int(int, int)> adder1 = &add;
+
+std::function<int(int)> increaser = std::bind(&add, _1, 1);
+int increased = increaser(5);   // Same as add(5, 1)
+```
+
+
+#### Structure of Command
+Our structure of command will look like the following
+```c++
+
+struct Command
+{
+    Command();
+    std::function<void(SceneNode&, sf::time)> action
+    unsigned int category;
+};
+```
+
+Each command will have a function Object associated with it via action. It will also have a category value. 
+These are the enum values of the Category that we are sending the command to.
+Example of the Category Structure
+
+```c++
+
+namespace Category
+{
+    enum Type
+    {
+        None = 0,
+        Scene = 1 << 0,
+        PlayerAircraft = 1 << 1,
+        AlliedAircraft = 1 << 2,
+        EnemyAircraft = 1 << 3
+    };
+}
+```
+We are shifting a the first bit over for each consecutive value and we get this
+Scene = 0001
+PlayerAircraft = 0010
+AlliedAircraft = 0100
+EnemyAircraft = 1000
+
+This way we can use the category value from our Command Struct and we can COMBINE the enum values and send the command to multiple category types
+
+#### Setting up Commands
+In order to send commands to someone we need to set up recievers to our game objects. In our world, Commands will be passed to our Scene Graph, which they are then distributed to all scene nodes with corresponding game objects
+Each SceneNode will be responsible for forwarding a command to its children

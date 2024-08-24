@@ -4,11 +4,18 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 
+#include "Category.hpp"
+#include "Command.hpp"
+
 class SceneNode : public sf::Transformable, public sf::Drawable
 {
     public:
         SceneNode();
         void update(sf::Time timeStep);
+
+        // Command Event Messaging Driver
+        void onCommand(const Command& command, sf::Time timeStep);
+
         sf::Transform getWorldTransform() const;
         sf::Vector2f getWorldPosition() const;
 
@@ -29,6 +36,8 @@ class SceneNode : public sf::Transformable, public sf::Drawable
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
         void drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 
+        virtual unsigned int getCategory() const;
+        void commandChildren(const Command& command, sf::Time timeStep) const;
 };
 
 

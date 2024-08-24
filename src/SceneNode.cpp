@@ -29,6 +29,27 @@ std::unique_ptr<SceneNode> SceneNode::detachChild(const SceneNode& node)
     return result;
 }
 
+unsigned int SceneNode::getCategory() const
+{
+    return Category::Scene;
+}
+
+void SceneNode::onCommand(const Command& command, sf::Time timeStep)
+{
+    if(command.category & this->getCategory())
+        command.action(*this, timeStep);
+
+    commandChildren(command, timeStep);
+}
+
+void SceneNode::commandChildren(const Command& command, sf::Time timeStep) const
+{
+    for(const std::unique_ptr<SceneNode>& child: mChildren)
+    {
+        child->onCommand(command, timeStep);
+    }
+}
+
 void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
     states.transform *= getTransform();
