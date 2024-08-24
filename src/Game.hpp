@@ -5,6 +5,7 @@
 
 #include "ResourceHolder.hpp"
 #include "World.hpp"
+#include "Player.hpp"
 
 class Game
 {
@@ -13,7 +14,7 @@ class Game
         void run();
 
     private:
-        void processEvents();
+        void processInput();
         void update(sf::Time deltaTime);
         void render();
 
@@ -26,6 +27,7 @@ class Game
 
         sf::RenderWindow mWindow;
         World mWorld;
+        Player mPlayer;
 
         sf::Font mFont;
         sf::Text mStatisticsText;

@@ -13,7 +13,8 @@ Game::Game() :
     mStatisticsText(),
     mStatisticsUpdateTime(),
     mStatisticsNumFrames(0),
-    mWorld(mWindow)
+    mWorld(mWindow),
+    mPlayer()
 {
     mFont.loadFromFile("../../media/Sansation.ttf");
     mStatisticsText.setFont(mFont);
@@ -35,7 +36,7 @@ void Game::run()
         {
             timeSinceLastUpdate -= TimePerFrame;
 
-            processEvents();
+            processInput();
             update(TimePerFrame);
         }
 
@@ -45,28 +46,28 @@ void Game::run()
 
 }
 
-void Game::processEvents()
+void Game::processInput()
 {
-    sf::Event event;
+    CommandQueue& commands = mWorld.getCommandQueue();
 
+    sf::Event event;
     while(mWindow.pollEvent(event))
     {
-        switch (event.type)
-        {
-            case sf::Event::KeyPressed: {
-                handlePlayerInput(event.key.code, true);
-                break;
-            }
-            case sf::Event::KeyReleased: {
-                handlePlayerInput(event.key.code, false);
-                break;
-            }
-            case sf::Event::Closed: {
-                mWindow.close();
-                break;
-            }
-        }
+        mPlayer.handleEvent(event, commands);
+
+        if(event.type == sf::Event::Closed)
+            mWindow.close();
     }
+
+    mPlayer.handleRealTimeInput(commands);
+}
+
+void Game::update(sf::Time fixedTimeStep)
+{
+    std::cout << "Time Per Frame as seconds: " << fixedTimeStep.asSeconds() << std::endl;
+    std::cout << "Time Per Frame as milliseconds: " << fixedTimeStep.asMicroseconds() << std::endl;
+
+    mWorld.update(fixedTimeStep);
 }
 
 void Game::render()
@@ -77,14 +78,6 @@ void Game::render()
     mWindow.setView(mWindow.getDefaultView());
     mWindow.draw(mStatisticsText);
     mWindow.display();
-}
-
-void Game::update(sf::Time fixedTimeStep)
-{
-    std::cout << "Time Per Frame as seconds: " << fixedTimeStep.asSeconds() << std::endl;
-    std::cout << "Time Per Frame as milliseconds: " << fixedTimeStep.asMicroseconds() << std::endl;
-
-    mWorld.update(fixedTimeStep);
 }
 
 void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)

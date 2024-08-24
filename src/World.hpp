@@ -17,6 +17,8 @@ class World : private sf::NonCopyable
         void update(sf::Time timeStep);
         void draw();
 
+        CommandQueue& getCommandQueue();
+
     private:
         enum Layer
         {
@@ -28,6 +30,9 @@ class World : private sf::NonCopyable
     private:
         void loadTextures();
         void buildScene();
+
+        void adaptPlayerVelocity();
+        void adaptPlayerPosition();
 
     private:
         sf::RenderWindow& mWindow;

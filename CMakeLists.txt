@@ -13,13 +13,16 @@ FetchContent_MakeAvailable(SFML)
 set(SRC src/main.cpp src/Game.cpp
         src/Entity.cpp src/Aircraft.cpp
         src/SpriteNode.cpp src/World.cpp
-        src/SceneNode.cpp)
+        src/SceneNode.cpp src/CommandQueue.cpp 
+        src/Player.cpp src/Command.cpp)
         
 set (INC src/Game.hpp src/Entity.hpp 
          src/Aircraft.hpp src/SpriteNode.hpp
          src/SpriteNode.hpp src/World.hpp 
          src/ResourceHolder.hpp src/ResourceEnums.hpp 
-         src/SceneNode.hpp)
+         src/SceneNode.hpp src/CommandQueue.hpp 
+         src/Player.hpp src/Category.hpp 
+         src/Command.hpp)
 
 add_executable(game ${SRC} ${INC})
 

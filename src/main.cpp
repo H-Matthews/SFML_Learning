@@ -1,4 +1,5 @@
 #include "Game.hpp"
+#include "Category.hpp"
 
 #include <iostream>
 #include <stdexcept>

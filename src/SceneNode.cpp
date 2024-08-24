@@ -36,7 +36,7 @@ unsigned int SceneNode::getCategory() const
 
 void SceneNode::onCommand(const Command& command, sf::Time timeStep)
 {
-    if(command.category & this->getCategory())
+    if(command.category & getCategory())
         command.action(*this, timeStep);
 
     commandChildren(command, timeStep);

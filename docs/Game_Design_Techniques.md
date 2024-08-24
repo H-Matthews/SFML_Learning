@@ -289,6 +289,14 @@ How do we separate input handling and game logic? We need a communication system
 ### Commands
 We will create a Command construct to denote messages that are sent to various game objects. A command is able to alter the object and to issue orders such as moving an entity, firing a weapon, or triggering an explosion.
 
+[Here](./Diagrams/CommandStructure.dio) is a diagram of how the commands will flow to our Scene Graph
+
+Essentially SFML events will be polled in the game class and forwarded to our Player class. The Player class will transform the events to commands and insert them into our CommandQueue. We do the same process for a Real-Time input, Player checks the current input state and pushes corresponding commands to the queue. The CommandQueue class stores a queue of commands and acts as a bridge between input handling and the game logic.
+
+On the game logic side, the World class pops commands off of the CommandQueue class and sends them to the root of the Scene Graph, inside which commands are distributed depending on their receiver categories.
+
+Eventually, the functions stored in each command (via command.action) will be applied to the correct game objects.
+
 #### std::function 
 This function is useful to create a Command Event Communication system, so its necessary to understand how it works.
 
@@ -329,6 +337,7 @@ int increased = increaser(5);   // Same as add(5, 1)
 
 
 #### Structure of Command
+
 Our structure of command will look like the following
 ```c++
 

@@ -2,7 +2,7 @@
 #include "SpriteNode.hpp"
 
 #include <iostream>
-
+#include <cmath>
 
 World::World(sf::RenderWindow& window) : 
     mWindow(window),
@@ -27,19 +27,25 @@ void World::update(sf::Time timeStep)
     // Scroll the World
     mWorldView.move(0.f, mScrollSpeed * timeStep.asSeconds());
 
-    // Move the player sidewards (plane scout follow the main aircraft)
-    sf::Vector2f position = mPlayerAircraft->getPosition();
-    sf::Vector2f velocity = mPlayerAircraft->getVelocity();
+    // Make sure PlayerAircraft only moves on Player input
+    mPlayerAircraft->setVelocity(0.f, 0.f);
 
-    // If the player touches borders, flip its X velocity
-    if(position.x <= mWorldBounds.left + 120.f || position.x >= mWorldBounds.left + mWorldBounds.width - 120.f)
-    {
-        velocity.x = -velocity.x;
-        mPlayerAircraft->setVelocity(velocity);
-    }
+    // Forward all commands in queue to Scene Graph
+    while(!mCommandQueue.isEmpty())
+        mSceneGraph.onCommand(mCommandQueue.pop(), timeStep);
 
-    // Apply movements
+    // Determines whether or not we changed our X and Y in the same update cycle
+    // If so, we must correct our velocity values because we will likely be going too fast
+    adaptPlayerVelocity();
+
+    // Apply movements; After update apply movement adjustment if necessary
     mSceneGraph.update(timeStep);
+    adaptPlayerPosition();
+}
+
+CommandQueue& World::getCommandQueue()
+{
+    return mCommandQueue;
 }
 
 void World::draw()
@@ -92,4 +98,32 @@ void World::buildScene()
 	std::unique_ptr<Aircraft> rightEscort(new Aircraft(Aircraft::Raptor, mTextures));
 	rightEscort->setPosition(80.f, 50.f); 
 	mPlayerAircraft->attachChild(std::move(rightEscort));
+}
+
+void World::adaptPlayerPosition()
+{
+    // Keep players position inside screen bounds, at least borderDistance units from the border
+    sf::FloatRect viewBounds(mWorldView.getCenter() - mWorldView.getSize() / 2.f, mWorldView.getSize());
+    const float borderDistance = 40.f;
+
+    // Update Position based on boundary
+    sf::Vector2f position = mPlayerAircraft->getPosition();
+    position.x = std::max(position.x, viewBounds.left + borderDistance);
+    position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
+    position.y = std::max(position.y, viewBounds.top + borderDistance);
+    position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+
+    mPlayerAircraft->setPosition(position);
+}
+
+void World::adaptPlayerVelocity()
+{
+    sf::Vector2f velocity = mPlayerAircraft->getVelocity();
+
+    if(velocity.x != 0.f && velocity.y != 0.f)
+    {
+        mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
+    }
+
+    mPlayerAircraft->accelerate(0.f, mScrollSpeed);
 }

@@ -1,5 +1,5 @@
 #ifndef CATEGORY_H
-#define CATEGORY
+#define CATEGORY_H
 
 // Purpose: Define categories to ensure correct delivery for our message delivery system
 // Description: Each category except for None is initialized with an integer that has one bit set to 1, and the 
@@ -14,8 +14,7 @@ namespace Category
         Scene = 1 << 0,
         PlayerAircraft = 1 << 1,
         AlliedAircraft = 1 << 2,
-        EnemyAircraft = 1 << 3
-
+        EnemyAircraft = 1 << 3,
     };
 }
 
