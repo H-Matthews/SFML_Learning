@@ -14,6 +14,7 @@ class PlayerInput
             MoveRight,
             MoveUp,
             MoveDown,
+            DisplayACPosition,
             ActionCount
         };
 

@@ -27,6 +27,8 @@ void Game::run()
     sf::Clock clock;
     sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+    mPlayerInput.assignKey(PlayerInput::Action::DisplayACPosition, sf::Keyboard::Key::P);
+
     while(mWindow.isOpen())
     {
 

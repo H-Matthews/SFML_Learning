@@ -3,6 +3,15 @@
 
 #include <iostream>
 
+struct AircraftStatistics
+{
+    void operator() (Aircraft& aircraft, sf::Time dt) const
+    {
+        std::cout << "X: " << aircraft.getPosition().x << std::endl;
+        std::cout << "Y: " << aircraft.getPosition().y << std::endl;
+    }
+};
+
 struct AircraftMover
 {
     AircraftMover(float vx, float vy) : 
@@ -13,8 +22,6 @@ struct AircraftMover
     void operator() (Aircraft& aircraft, sf::Time) const
     {
         aircraft.accelerate(velocity);
-        std::cout << "X: " << aircraft.getPosition().x << std::endl;
-        std::cout << "Y: " << aircraft.getPosition().y << std::endl;
     }
 
     sf::Vector2f velocity;
@@ -86,12 +93,13 @@ sf::Keyboard::Key PlayerInput::getAssignedKey(Action action) const
 
 void PlayerInput::initializeActions()
 {
-    const float playerSpeed = 200.f;
+    const float playerSpeed = 150.f;
 
     mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
     mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
     mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
     mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+    mActionBinding[DisplayACPosition].action = derivedAction<Aircraft>(AircraftStatistics());
 
 }
 
