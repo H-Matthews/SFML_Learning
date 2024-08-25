@@ -5,7 +5,7 @@
 
 #include "CommandQueue.hpp"
 
-class Player
+class PlayerInput
 {
     public:
         enum Action
@@ -17,7 +17,7 @@ class Player
             ActionCount
         };
 
-        Player();
+        PlayerInput();
         void handleEvent(const sf::Event& event, CommandQueue& commands);
         void handleRealTimeInput(CommandQueue& commands);
 

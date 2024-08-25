@@ -5,7 +5,7 @@
 
 #include "ResourceHolder.hpp"
 #include "World.hpp"
-#include "Player.hpp"
+#include "PlayerInput.hpp"
 
 class Game
 {
@@ -17,8 +17,7 @@ class Game
         void processInput();
         void update(sf::Time deltaTime);
         void render();
-
-        void handlePlayerInput(sf::Keyboard::Key key, bool isPressed);
+        
         void updateStatistics(sf::Time elapsedTime);
         std::string toString(std::size_t value);
 
@@ -27,7 +26,7 @@ class Game
 
         sf::RenderWindow mWindow;
         World mWorld;
-        Player mPlayer;
+        PlayerInput mPlayerInput;
 
         sf::Font mFont;
         sf::Text mStatisticsText;

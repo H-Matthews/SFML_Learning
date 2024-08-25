@@ -14,7 +14,7 @@ Game::Game() :
     mStatisticsUpdateTime(),
     mStatisticsNumFrames(0),
     mWorld(mWindow),
-    mPlayer()
+    mPlayerInput()
 {
     mFont.loadFromFile("../../media/Sansation.ttf");
     mStatisticsText.setFont(mFont);
@@ -53,20 +53,17 @@ void Game::processInput()
     sf::Event event;
     while(mWindow.pollEvent(event))
     {
-        mPlayer.handleEvent(event, commands);
+        mPlayerInput.handleEvent(event, commands);
 
         if(event.type == sf::Event::Closed)
             mWindow.close();
     }
 
-    mPlayer.handleRealTimeInput(commands);
+    mPlayerInput.handleRealTimeInput(commands);
 }
 
 void Game::update(sf::Time fixedTimeStep)
 {
-    std::cout << "Time Per Frame as seconds: " << fixedTimeStep.asSeconds() << std::endl;
-    std::cout << "Time Per Frame as milliseconds: " << fixedTimeStep.asMicroseconds() << std::endl;
-
     mWorld.update(fixedTimeStep);
 }
 
@@ -78,10 +75,6 @@ void Game::render()
     mWindow.setView(mWindow.getDefaultView());
     mWindow.draw(mStatisticsText);
     mWindow.display();
-}
-
-void Game::handlePlayerInput(sf::Keyboard::Key key, bool isPressed)
-{
 }
 
 std::string Game::toString(std::size_t value)

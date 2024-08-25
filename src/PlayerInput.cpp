@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "PlayerInput.hpp"
 #include "Aircraft.hpp"
 
 #include <iostream>
@@ -13,18 +13,20 @@ struct AircraftMover
     void operator() (Aircraft& aircraft, sf::Time) const
     {
         aircraft.accelerate(velocity);
+        std::cout << "X: " << aircraft.getPosition().x << std::endl;
+        std::cout << "Y: " << aircraft.getPosition().y << std::endl;
     }
 
     sf::Vector2f velocity;
 };
 
-Player::Player()
+PlayerInput::PlayerInput()
 {
     // Set Initial Key Bindings
-    mKeyBinding[sf::Keyboard::Left] = MoveLeft;
-    mKeyBinding[sf::Keyboard::Right] = MoveRight;
-    mKeyBinding[sf::Keyboard::Up] = MoveUp;
-    mKeyBinding[sf::Keyboard::Down] = MoveDown;
+    mKeyBinding[sf::Keyboard::A] = MoveLeft;
+    mKeyBinding[sf::Keyboard::D] = MoveRight;
+    mKeyBinding[sf::Keyboard::W] = MoveUp;
+    mKeyBinding[sf::Keyboard::S] = MoveDown;
 
     // Set initial Action Bindings
     initializeActions();
@@ -35,7 +37,7 @@ Player::Player()
     }
 }
 
-void Player::handleRealTimeInput(CommandQueue& commands)
+void PlayerInput::handleRealTimeInput(CommandQueue& commands)
 {
     for(auto pair: mKeyBinding)
     {
@@ -44,7 +46,7 @@ void Player::handleRealTimeInput(CommandQueue& commands)
     }
 }
 
-void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
+void PlayerInput::handleEvent(const sf::Event& event, CommandQueue& commands)
 {
     if(event.type == sf::Event::KeyPressed)
     {
@@ -54,7 +56,7 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
     }
 }
 
-void Player::assignKey(Action action, sf::Keyboard::Key key)
+void PlayerInput::assignKey(Action action, sf::Keyboard::Key key)
 {
     // Remove all keys that already map to an action
     for(auto itr = mKeyBinding.begin(); itr != mKeyBinding.end(); )
@@ -70,7 +72,7 @@ void Player::assignKey(Action action, sf::Keyboard::Key key)
 }
 
 
-sf::Keyboard::Key Player::getAssignedKey(Action action) const
+sf::Keyboard::Key PlayerInput::getAssignedKey(Action action) const
 {
     sf::Keyboard::Key keyValue;
     for(auto pair: mKeyBinding)
@@ -82,7 +84,7 @@ sf::Keyboard::Key Player::getAssignedKey(Action action) const
     return keyValue;
 }
 
-void Player::initializeActions()
+void PlayerInput::initializeActions()
 {
     const float playerSpeed = 200.f;
 
@@ -93,7 +95,7 @@ void Player::initializeActions()
 
 }
 
-bool Player::isRealTimeAction(Action action)
+bool PlayerInput::isRealTimeAction(Action action)
 {
     bool isAction = false;
 

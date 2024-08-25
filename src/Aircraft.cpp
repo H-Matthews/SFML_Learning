@@ -1,7 +1,5 @@
 #include "Aircraft.hpp"
 
-#include <iostream>
-
 Textures::ID toTextureID(Aircraft::Type type)
 {
     Textures::ID tempType;
@@ -45,8 +43,6 @@ unsigned int Aircraft::getCategory() const
         default:
             type = Category::EnemyAircraft;
     }
-
-    std::cout << type << std::endl;
 
     return type;
 }
