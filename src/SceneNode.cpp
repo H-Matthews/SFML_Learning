@@ -29,7 +29,7 @@ std::unique_ptr<SceneNode> SceneNode::detachChild(const SceneNode& node)
     return result;
 }
 
-unsigned int SceneNode::getCategory() const
+uint32_t SceneNode::getCategory() const
 {
     return Category::Scene;
 }

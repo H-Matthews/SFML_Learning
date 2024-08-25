@@ -3,15 +3,6 @@
 
 #include <iostream>
 
-struct AircraftStatistics
-{
-    void operator() (Aircraft& aircraft, sf::Time dt) const
-    {
-        std::cout << "X: " << aircraft.getPosition().x << std::endl;
-        std::cout << "Y: " << aircraft.getPosition().y << std::endl;
-    }
-};
-
 struct AircraftMover
 {
     AircraftMover(float vx, float vy) : 
@@ -27,6 +18,12 @@ struct AircraftMover
     sf::Vector2f velocity;
 };
 
+void stats(SceneNode& s, sf::Time dt)
+{
+    std::cout << "Aircraft Position X: " << s.getPosition().x << std::endl;
+    std::cout << "Aircraft Position Y: " << s.getPosition().y << std::endl;
+}
+
 PlayerInput::PlayerInput()
 {
     // Set Initial Key Bindings
@@ -34,6 +31,7 @@ PlayerInput::PlayerInput()
     mKeyBinding[sf::Keyboard::D] = MoveRight;
     mKeyBinding[sf::Keyboard::W] = MoveUp;
     mKeyBinding[sf::Keyboard::S] = MoveDown;
+    mKeyBinding[sf::Keyboard::P] = DisplayACPosition;
 
     // Set initial Action Bindings
     initializeActions();
@@ -42,6 +40,25 @@ PlayerInput::PlayerInput()
     {
         pair.second.category = Category::PlayerAircraft;
     }
+}
+
+void PlayerInput::initializeActions()
+{
+    const float playerSpeed = 200.f;
+
+    mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
+    mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
+    mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
+    mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
+    mActionBinding[DisplayACPosition].action = &stats;
+
+    // Shows how to assign lambda to action
+    /*mActionBinding[DisplayACPosition].action = [] (SceneNode& s, sf::Time dt)
+                                                {
+                                                    std::cout << s.getPosition().x << std::endl;
+                                                    std::cout << s.getPosition().y << std::endl;
+                                                };
+    */
 }
 
 void PlayerInput::handleRealTimeInput(CommandQueue& commands)
@@ -61,6 +78,25 @@ void PlayerInput::handleEvent(const sf::Event& event, CommandQueue& commands)
         if( found != mKeyBinding.end() && !isRealTimeAction(found->second))
             commands.push(mActionBinding[found->second]);
     }
+}
+
+bool PlayerInput::isRealTimeAction(Action action)
+{
+    bool isRealTimeAction = false;
+
+    switch(action)
+    {
+        case MoveLeft:
+        case MoveRight:
+        case MoveUp:
+        case MoveDown:
+            isRealTimeAction = true;
+            break;
+        default:
+            isRealTimeAction = false;
+    }
+
+    return isRealTimeAction;
 }
 
 void PlayerInput::assignKey(Action action, sf::Keyboard::Key key)
@@ -89,36 +125,5 @@ sf::Keyboard::Key PlayerInput::getAssignedKey(Action action) const
     }
 
     return keyValue;
-}
-
-void PlayerInput::initializeActions()
-{
-    const float playerSpeed = 150.f;
-
-    mActionBinding[MoveLeft].action = derivedAction<Aircraft>(AircraftMover(-playerSpeed, 0.f));
-    mActionBinding[MoveRight].action = derivedAction<Aircraft>(AircraftMover(+playerSpeed, 0.f));
-    mActionBinding[MoveUp].action = derivedAction<Aircraft>(AircraftMover(0.f, -playerSpeed));
-    mActionBinding[MoveDown].action = derivedAction<Aircraft>(AircraftMover(0.f, +playerSpeed));
-    mActionBinding[DisplayACPosition].action = derivedAction<Aircraft>(AircraftStatistics());
-
-}
-
-bool PlayerInput::isRealTimeAction(Action action)
-{
-    bool isAction = false;
-
-    switch(action)
-    {
-        case MoveLeft:
-        case MoveRight:
-        case MoveUp:
-        case MoveDown:
-            isAction = true;
-            break;
-        default:
-            isAction = false;
-    }
-
-    return isAction;
 }
         

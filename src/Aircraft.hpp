@@ -20,7 +20,7 @@ class Aircraft : public Entity
         
         // Derives from SceneNode
         virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const override;
-        virtual unsigned int getCategory() const override;
+        virtual uint32_t getCategory() const override;
 
     private:
         Type mType;

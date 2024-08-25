@@ -5,6 +5,7 @@ Attempting to develop a 2D game has shown me that I dont know much about how bas
 - [Game Loops and Frames](./Game_Design_Techniques.md#game-loops-and-frames)
 - [Resource Management](./Game_Design_Techniques.md#resource-management)
 - [Sequential Rendering](./Game_Design_Techniques.md#sequential-rendering)
+- [Modern C++ Constructs](./Game_Design_Techniques.md#modern-c-constructs)
 
 ### Game Loops and Frames
 
@@ -251,7 +252,7 @@ In SFML, there is the following event types
 There is documentation on SFMLs website that goes into great detail regarding these [events](https://www.sfml-dev.org/tutorials/2.6/window-events.php)
 
 ## Real time input state
-A major restriction with events is that they report only once and it goes into the event data structure. Meaning you cannot continously ask them how the satte of the input devices looks RIGHT NOW. You must wait until the code executes where you pop events from the DS.
+A major restriction with events is that they report only once and it goes into the event data structure. Meaning you cannot continously ask them how the state of the input devices looks RIGHT NOW. You must wait until the code executes where you pop events from the DS.
 
 SFML makes input management easier and implements classes that allows you to check for REAL TIME events. 
 
@@ -284,20 +285,107 @@ if(event.type == sf::Event::MouseButtonPressed)
 ```
 
 ## Separating input handling and Game Logic
-How do we separate input handling and game logic? We need a communication system that way when an event happens we send our a message to everyone that is interested.
+If we want to implement our playerAircraft launching a missile in the current iteration of our game, we would have to add it to the Game Class. 
+Example:
+```c++
+sf::Event events
+// One Time Events
+while(window.pollEvent(event))
+{
+    if(event.type == sf::Event::KeyPressed && event.key.code == sf::Keyboard::X)
+        mPlayerAircraft->launchMissile();
+}
+
+// Real-Time events
+if(sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    mPlayerAircraft->moveLeft();
+else if(sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    mPlayerAircraft->moveRight();
+```
+
+This very quickly becomes unmaintable and gives us NO flexibility. If we want to change the KeyBinding for MoveLeft to 'A', then we have to change source code. Also calling mPlayerAircraft->launchMissile() in the Game Class breaks our current flow of execution of updating and drawing entities via the SceneGraph.
+
+The way to solve this problem is to create a PlayerInput Class that will take a forwarded event from the Game Class, look up the Key that was pressed, and associate it with a specific action. We will then store this 'Command' in a Queue. Our queue of commands will then be dealt with in the World::Update Class that will call our Scene Graph to distribute the commands to the correct Entities.
+
+The CommandQueue will act as the bridge between PlayerInput and GameLogic as we use it in the PlayerInput Class, and the World::Update class
+
+This abstracts the game logic out of our Game Class and puts it in the World::Update() function as it should be. It also gives our Player the flexibility to map their own Keybindings to whatever action they want which is a very desireable feature.
 
 ### Commands
-We will create a Command construct to denote messages that are sent to various game objects. A command is able to alter the object and to issue orders such as moving an entity, firing a weapon, or triggering an explosion.
+As stated above, we will create a Command construct to denote messages that are sent to various game objects. A command is able to alter the object and to issue orders such as moving an entity, firing a weapon, or triggering an explosion. It will also have a value that denotes which node the command will be delivered to allowing us to deliver a single command to multiple nodes.
 
 [Here](./Diagrams/CommandStructure.dio) is a diagram of how the commands will flow to our Scene Graph
 
-Essentially SFML events will be polled in the game class and forwarded to our Player class. The Player class will transform the events to commands and insert them into our CommandQueue. We do the same process for a Real-Time input, Player checks the current input state and pushes corresponding commands to the queue. The CommandQueue class stores a queue of commands and acts as a bridge between input handling and the game logic.
+Each one of our Nodes that would like to recieve commands needs a reciever function. This will be a very simple if check to see if the Nodes 'Category' matches the commands 'Category'
 
-On the game logic side, the World class pops commands off of the CommandQueue class and sends them to the root of the Scene Graph, inside which commands are distributed depending on their receiver categories.
+Eventually, the functions stored in each command (via command.action) will be applied to the correct game objects. 
 
-Eventually, the functions stored in each command (via command.action) will be applied to the correct game objects.
+#### Structure of Command
 
-#### std::function 
+Our structure of command will look like the following
+```c++
+
+struct Command
+{
+    Command();
+    std::function<void(SceneNode&, sf::time)> action
+    unsigned int category;
+};
+```
+
+Each command will have a function Object associated with it via action. Link to [std::function](./Game_Design_Techniques.md#stdfunction). It will also have a category value. 
+These are the enum values of the Category that we are sending the command to.
+Example of the Category Structure:
+```c++
+
+namespace Category
+{
+    enum Type
+    {
+        None = 0,
+        Scene = 1 << 0,
+        PlayerAircraft = 1 << 1,
+        AlliedAircraft = 1 << 2,
+        EnemyAircraft = 1 << 3
+    };
+}
+```
+Note:: We are shifting a the first bit over for each consecutive value and we get this
+Scene = 0001 == 1
+PlayerAircraft = 0010 == 2
+AlliedAircraft = 0100 == 4
+EnemyAircraft = 1000 == 8
+
+This way we can use the category value from our Command Struct and we can COMBINE the enum values with a bitwise OR and send the command to multiple category types. 
+
+#### Setting up Commands
+In order to send commands to someone we need to set up recievers to our game objects. In our world, Commands will be passed to our Scene Graph, which they are then distributed to all scene nodes with corresponding game objects
+Each SceneNode will be responsible for forwarding a command to its children.
+
+Example of a 'Receiver'
+```c++
+unsigned int Aircraft::getCategory() const
+{
+    Category::Type type;
+
+    switch (mType)
+    {
+        case Eagle:
+            type = Category::PlayerAircraft;
+            break;
+        default:
+            type = Category::EnemyAircraft;
+    }
+
+    return type;
+}
+```
+The type is returned from this function and the command will check to see if it has the same type. If so, then it will execute the commands action. The action will contain a function object. In our Aircrafts case, the action that is linked with KeyBind 'W' is accelerate(0, -PlayerSpeed), so command.action will execute accelerate(0, -PlayerSpeed);
+
+# Modern C++ Constructs
+As I develop the game, I would like to learn to use Modern C++ Constructs. If I run into a new C++ function I will document it here.
+
+## std::Function
 This function is useful to create a Command Event Communication system, so its necessary to understand how it works.
 
 std::function class is a general purpose polymorphic function wrapper. Instances of std::function can store, copy, and invoke any target: lambda expressions, binding expressions or other function objects, as well as pointers to member functions and pointers to data members.
@@ -334,47 +422,3 @@ std::function<int(int, int)> adder1 = &add;
 std::function<int(int)> increaser = std::bind(&add, _1, 1);
 int increased = increaser(5);   // Same as add(5, 1)
 ```
-
-
-#### Structure of Command
-
-Our structure of command will look like the following
-```c++
-
-struct Command
-{
-    Command();
-    std::function<void(SceneNode&, sf::time)> action
-    unsigned int category;
-};
-```
-
-Each command will have a function Object associated with it via action. It will also have a category value. 
-These are the enum values of the Category that we are sending the command to.
-Example of the Category Structure
-
-```c++
-
-namespace Category
-{
-    enum Type
-    {
-        None = 0,
-        Scene = 1 << 0,
-        PlayerAircraft = 1 << 1,
-        AlliedAircraft = 1 << 2,
-        EnemyAircraft = 1 << 3
-    };
-}
-```
-We are shifting a the first bit over for each consecutive value and we get this
-Scene = 0001
-PlayerAircraft = 0010
-AlliedAircraft = 0100
-EnemyAircraft = 1000
-
-This way we can use the category value from our Command Struct and we can COMBINE the enum values and send the command to multiple category types
-
-#### Setting up Commands
-In order to send commands to someone we need to set up recievers to our game objects. In our world, Commands will be passed to our Scene Graph, which they are then distributed to all scene nodes with corresponding game objects
-Each SceneNode will be responsible for forwarding a command to its children

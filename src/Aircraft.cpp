@@ -31,7 +31,7 @@ void Aircraft::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
     target.draw(mSprite, states);
 }
 
-unsigned int Aircraft::getCategory() const
+uint32_t Aircraft::getCategory() const
 {
     Category::Type type;
 

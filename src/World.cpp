@@ -124,6 +124,4 @@ void World::adaptPlayerVelocity()
     {
         mPlayerAircraft->setVelocity(velocity / std::sqrt(2.f));
     }
-
-    mPlayerAircraft->accelerate(0.f, mScrollSpeed);
 }
