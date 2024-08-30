@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.16)
 project(SFML_Learning LANGUAGES CXX)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../../bin/${CMAKE_BUILD_TYPE})
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/../../application/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
@@ -10,24 +10,8 @@ FetchContent_Declare(SFML
     GIT_TAG 2.6.x)
 FetchContent_MakeAvailable(SFML)
 
-set(SRC src/main.cpp src/Game.cpp
-        src/Entity.cpp src/Aircraft.cpp
-        src/SpriteNode.cpp src/World.cpp
-        src/SceneNode.cpp src/CommandQueue.cpp 
-        src/PlayerInput.cpp src/Command.cpp)
-        
-set (INC src/Game.hpp src/Entity.hpp 
-         src/Aircraft.hpp src/SpriteNode.hpp
-         src/SpriteNode.hpp src/World.hpp 
-         src/ResourceHolder.hpp src/ResourceEnums.hpp 
-         src/SceneNode.hpp src/CommandQueue.hpp 
-         src/PlayerInput.hpp src/Category.hpp 
-         src/Command.hpp)
-
-add_executable(game ${SRC} ${INC})
-
-target_link_libraries(game PRIVATE sfml-graphics)
-target_compile_features(game PRIVATE cxx_std_17)
+add_subdirectory(libs/utility)
+add_subdirectory(application)
 
 if(WIN32)
     add_custom_command(
